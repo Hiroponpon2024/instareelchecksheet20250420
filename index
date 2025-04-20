@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完璧なインスタリールを作るための究極チェックリスト Ver.2</title>
+    <style>
+        :root {
+            --main-color: #5ce1e6;
+            --accent-color: #4cc2c7;
+            --text-color: #333;
+            --bg-color: #f9f9f9;
+            --white: #fff;
+            --gray: #ccc;
+            --dark-gray: #666;
+            --success-color: #4CAF50;
+            --warning-color: #ff9800; /* For emphasis */
+            --border-radius: 8px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* 横スクロール防止 */
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--main-color), var(--accent-color));
+            color: var(--white);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        .checklist-section {
+            background-color: var(--white);
+            margin-bottom: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden; /* アニメーションのため */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .checklist-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header {
+            background-color: var(--main-color);
+            color: var(--white);
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .section-header:hover {
+            background-color: var(--accent-color);
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+        }
+         .section-header h2 .icon {
+            margin-right: 10px;
+            font-size: 1.2em; /* アイコンサイズ調整 */
+         }
+
+
+        .section-toggle {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+
+        .checklist-section.open .section-toggle {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            padding: 20px;
+            display: none; /* Initially hidden */
+            border-top: 1px solid var(--gray);
+        }
+
+        .checklist-section.open .section-content {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px dashed var(--gray);
+            position: relative;
+        }
+         .checklist-item:last-child {
+             margin-bottom: 0;
+             padding-bottom: 0;
+             border-bottom: none;
+         }
+
+        .checkbox-container {
+            margin-right: 15px;
+            position: relative;
+            top: 2px;
+        }
+
+        .custom-checkbox {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: var(--white);
+            border: 2px solid var(--gray);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        .custom-checkbox::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid var(--white);
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-checkbox.checked {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .custom-checkbox.checked::after {
+            opacity: 1;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            color: var(--text-color);
+            display: block; /* Ensure title stays above description */
+        }
+         .item-title .item-number {
+             display: inline-block;
+             background-color: var(--accent-color);
+             color: white;
+             border-radius: 50%;
+             width: 22px;
+             height: 22px;
+             text-align: center;
+             line-height: 22px;
+             font-size: 0.8em;
+             margin-right: 8px;
+             font-weight: bold;
+         }
+
+        .item-description {
+            font-size: 0.95em;
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+            padding-left: 30px; /* Indent description */
+        }
+        .item-description::before {
+            content: "補足：";
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .item-example {
+            font-size: 0.9em;
+            color: var(--warning-color);
+            background-color: #fff3e0;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            display: block; /* Block display for examples */
+            margin-top: 5px;
+            margin-left: 30px; /* Indent example */
+            border-left: 3px solid var(--warning-color);
+        }
+        .item-example::before {
+            content: "具体例：";
+            font-weight: bold;
+        }
+
+        .item-details {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--accent-color);
+             margin-left: 30px; /* Indent details */
+        }
+
+        .item-details h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            font-size: 1em;
+        }
+
+        .item-details img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Graphical Elements */
+        .flowchart {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 10px;
+            padding: 15px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gray);
+        }
+        .flow-step {
+            text-align: center;
+            font-size: 0.9em;
+            padding: 5px 10px;
+            background-color: #e0fcfd;
+            border-radius: 15px;
+            color: var(--accent-color);
+            margin: 0 5px;
+            position: relative;
+        }
+        .flow-arrow {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .bar-chart {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: var(--white);
+            border: 1px solid var(--gray);
+            border-radius: var(--border-radius);
+        }
+        .bar-label {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        .bar {
+            height: 20px;
+            background-color: var(--main-color);
+            border-radius: 10px;
+            text-align: right;
+            padding-right: 5px;
+            line-height: 20px;
+            color: var(--white);
+            font-size: 0.8em;
+            transition: width 0.5s ease-out;
+        }
+
+        .keyword-tags {
+            margin-top: 10px;
+        }
+        .tag {
+            display: inline-block;
+            background-color: var(--main-color);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin: 3px;
+            transition: transform 0.2s ease;
+        }
+        .tag:hover {
+            transform: scale(1.1);
+            background-color: var(--accent-color);
+        }
+
+        .comparison {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .comparison > div {
+            flex: 1;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+        .comparison .good {
+            border: 2px solid var(--success-color);
+            background-color: #e8f5e9;
+        }
+         .comparison .bad {
+            border: 2px solid #f44336;
+            background-color: #ffebee;
+        }
+         .comparison h5 {
+             margin-top: 0;
+             margin-bottom: 5px;
+         }
+        .comparison .good h5 { color: var(--success-color); }
+        .comparison .bad h5 { color: #f44336; }
+        .comparison p { font-size: 0.9em; margin-bottom: 0; }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: var(--gray);
+            z-index: 1000; /* 最前面に表示 */
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0; /* Initial width */
+            background-color: var(--success-color);
+            transition: width 0.4s ease;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--dark-gray);
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2em; }
+            .container { padding: 10px; }
+            .section-header h2 { font-size: 1.3em; }
+            .checklist-item { flex-direction: column; align-items: flex-start; }
+            .checkbox-container { margin-bottom: 10px; }
+             .item-description, .item-example, .item-details { margin-left: 0; padding-left: 15px;}
+             .item-title .item-number { margin-right: 5px; }
+            .flowchart { flex-direction: column; align-items: stretch; }
+            .flow-step { margin: 5px 0; }
+            .flow-arrow { display: none; } /* Hide arrows on small screens */
+            .comparison { flex-direction: column; }
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.8em; }
+            header p { font-size: 1em; }
+            .section-header h2 { font-size: 1.2em; }
+            .item-title { font-size: 1em; }
+            .item-description { font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <header>
+        <h1>完璧なインスタリールを作るための究極チェックリスト</h1>
+        <p>高品質で魅力的なリール動画を作成するためのステップバイステップガイド (全55項目)</p>
+    </header>
+
+    <div class="container">
+
+        <!-- STEP 1: 企画・台本作成 (No. 1-14) -->
+        <section class="checklist-section" id="step1">
+            <div class="section-header">
+                <h2><span class="icon">📝</span> STEP 1：企画・台本作成</h2>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <!-- Item 1 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="1"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">1</span>競合他社のリサーチ</span>
+                        <p class="item-description">エンゲージメントが高い競合他社のリール構成を参考にする。</p>
+                        <span class="item-example">フォロワー数に対して3倍以上の再生数があるリール構成を確認</span>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="2"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">2</span>競合他社の構成が自分なりの切り口になっているか</span>
+                        <p class="item-description">他社リールを丸パクりではなく、自分なりの切り口や経験、価値観を織り交ぜる。</p>
+                        <span class="item-example">「私は過去にこんなことがありました。」など自分だけが体験したことを台本に加える</span>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="3"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">3</span>ターゲット設定 (誰に届けたいか)</span>
+                        <p class="item-description">対象となる視聴者の年齢、性別、悩みなどを具体的に設定する。</p>
+                        <span class="item-example">25〜35歳の働く女性で、インスタ初心者向け</span>
+                         <div class="item-details">
+                             <h4>ターゲットを具体的にする理由</h4>
+                             <p>ターゲットが明確だと、響く言葉選びやテーマ設定がしやすくなります。</p>
+                             <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="ターゲット設定のイメージ">
+                             <!-- Unsplash: https://unsplash.com/photos/group-of-people-sitting-indoors-near-table-with-laptops-1556157382-97eda2d62296 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 4 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="4"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">4</span>目的設定 (保存/集客/販売など)</span>
+                        <p class="item-description">「誰に」「何を」伝えたいかが台本の中で明確になっている。</p>
+                        <span class="item-example">該当内容に合わせて、実際の運用シーンや表現を記入 (例: 保存促進、LINE登録誘導など)</span>
+                    </div>
+                </div>
+                 <!-- Item 5 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="5"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">5</span>テーマが一言で伝わるか</span>
+                        <p class="item-description">テーマがパッと見で伝わる、1文で言えるようにする。</p>
+                        <span class="item-example">30秒でわかる！ Canvaの時短術</span>
+                    </div>
+                </div>
+                <!-- Item 6 -->
+                <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="6"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">6</span>冒頭3秒のフックがある</span>
+                         <p class="item-description">最初の3秒で視聴者の心を掴むような一言があるか確認する。</p>
+                         <span class="item-example">99%が知らないストーリーの裏技教えちゃいます</span>
+                         <div class="item-details">
+                            <h4>フックの重要性</h4>
+                            <p>視聴者は最初の数秒で視聴を続けるか判断します。強いフックで離脱を防ぎましょう。</p>
+                            <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="冒頭のフックの重要性を示すイメージ">
+                            <!-- Unsplash: https://unsplash.com/photos/people-using-laptop-computers-1516321497487-e288fb19713f -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 7 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="7"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">7</span>台本が「フック→本編→まとめ→CTA」構成になっているか</span>
+                        <p class="item-description">情報が整理され「フック→本編→まとめ→CTA」の流れになっているか。</p>
+                        <span class="item-example">冒頭3秒フック→伝えたい詳しい内容→まとめ→CTA</span>
+                        <div class="item-details">
+                            <h4>基本構成（フロー図）</h4>
+                            <div class="flowchart">
+                                <div class="flow-step">🎣フック</div>
+                                <div class="flow-arrow">→</div>
+                                <div class="flow-step">📖本編</div>
+                                <div class="flow-arrow">→</div>
+                                <div class="flow-step">📌まとめ</div>
+                                <div class="flow-arrow">→</div>
+                                <div class="flow-step">📣CTA</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Item 8 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="8"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">8</span>セリフ・ナレーションを書き出している</span>
+                        <p class="item-description">実際のセリフやナレーションをテキストに書き起こして準備する。</p>
+                        <span class="item-example">該当内容に合わせて、実際の運用シーンや表現を記入</span>
+                    </div>
+                </div>
+                 <!-- Item 9 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="9"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">9</span>テロップ用の文字数を想定している</span>
+                        <p class="item-description">1テロップあたりの文字数(目安10〜12文字)を想定して構成する。</p>
+                        <span class="item-example">1テロップ10文字までを意識</span>
+                         <div class="item-details">
+                            <h4>テロップ文字数の目安</h4>
+                            <div class="bar-chart">
+                                <div class="bar-label">推奨文字数 (10〜12文字)</div>
+                                <div class="bar" style="width: 70%; background-color: var(--success-color);">10-12文字</div>
+                                <div class="bar-label" style="margin-top: 10px;">読みにくい可能性 (15文字以上)</div>
+                                <div class="bar" style="width: 90%; background-color: var(--warning-color);">15文字以上</div>
+                            </div>
+                            <p style="font-size:0.8em; text-align: right; color: var(--dark-gray)">※あくまで目安です</p>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Item 10 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="10"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">10</span>CTA (保存・シェア等)を含めている</span>
+                        <p class="item-description">保存・シェア・コメント・リンク誘導など、視聴者が次のアクションを起こせるような言葉が入っているかを確認する。</p>
+                        <span class="item-example">「保存して見返してね」「気になる人にシェアしてね」</span>
+                    </div>
+                </div>
+                 <!-- Item 11 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="11"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">11</span>キーワードが明確に3つ以上ある</span>
+                        <p class="item-description">印象に残る言葉や繰り返し使いたいキーワードを3つ以上用意している。</p>
+                        <span class="item-example">「初心者でも」「プロのような」「リール動画撮影」「短時間」</span>
+                         <div class="item-details">
+                            <h4>キーワード例</h4>
+                            <div class="keyword-tags">
+                                <span class="tag">リール</span> <span class="tag">ショート動画</span> <span class="tag">インスタ運用</span>
+                                <span class="tag">初心者向け</span> <span class="tag">時短術</span> <span class="tag">裏技</span>
+                                <span class="tag">Canva</span> <span class="tag">動画編集</span> <span class="tag">SNSマーケティング</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Item 12 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="12"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">12</span>15〜30秒で構成している</span>
+                        <p class="item-description">視聴時間を30秒以内に収めて離脱を防ぐ。</p>
+                        <span class="item-example">30秒以内で話しきる台本</span>
+                    </div>
+                </div>
+                <!-- Item 13 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="13"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">13</span>本編に具体例を含んでいる</span>
+                        <p class="item-description">「結論→理由→例」の流れで構成されており、具体例があると分かりやすい。</p>
+                        <span class="item-example">「〇〇が伸びない理由、それは〇〇です」</span>
+                    </div>
+                </div>
+                <!-- Item 14 -->
+                <div class="checklist-item">
+                    <div class="checkbox-container"><span class="custom-checkbox" data-item-id="14"></span></div>
+                    <div class="item-content">
+                        <span class="item-title"><span class="item-number">14</span>まとめが一言で端的</span>
+                        <p class="item-description">内容を1フレーズに要約して、印象づけて終わる。</p>
+                        <span class="item-example">「だから〇〇しましょう！」</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 2: 撮影準備 (No. 15-23) -->
+        <section class="checklist-section" id="step2">
+             <div class="section-header">
+                 <h2><span class="icon">🎬</span> STEP 2：撮影準備</h2>
+                 <span class="section-toggle">▼</span>
+             </div>
+             <div class="section-content">
+                 <!-- Item 15 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="15"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">15</span>撮影場所の光量チェック (自然光・ライト)</span>
+                         <p class="item-description">暗すぎない環境で自然光または照明を使う。</p>
+                         <span class="item-example">窓際 or ライトを活用 (後で映像編集で明るくするのもOKです)</span>
+                         <div class="item-details">
+                             <h4>明るい映像のために</h4>
+                             <p>自然光が最も綺麗ですが、足りない場合はリングライトなどで補いましょう。</p>
+                             <img src="https://images.unsplash.com/photo-1617814086918-402b86d9367a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="リングライトを使った撮影のイメージ">
+                             <!-- Unsplash: https://unsplash.com/photos/black-ring-light-with-tripod-stand-1617814086918-402b86d9367a -->
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 16 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="16"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">16</span>背景が整っているか (ゴチャゴチャ回避)</span>
+                         <p class="item-description">視覚的にノイズのない背景を準備する。</p>
+                         <span class="item-example">白壁 / 観葉植物のみ / 布背景を使う</span>
+                         <div class="item-details">
+                             <h4>背景の重要性</h4>
+                             <p>背景がスッキリしていると、視聴者は話し手に集中しやすくなります。</p>
+                             <img src="https://images.unsplash.com/photo-1593062096033-9a26b09da705?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="整った背景のイメージ">
+                             <!-- Unsplash: https://unsplash.com/photos/white-wall-paint-room-1593062096033-9a26b09da705 -->
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 17 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="17"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">17</span>カメラレンズ清掃済み</span>
+                         <p class="item-description">スマホ・カメラのレンズが汚れていない。</p>
+                         <span class="item-example">ティッシュで拭き取り or ブロワー使用</span>
+                     </div>
+                 </div>
+                 <!-- Item 18 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="18"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">18</span>画質設定 (1080p〜4K)</span>
+                         <p class="item-description">高画質で撮影できるよう設定している。</p>
+                         <span class="item-example">iPhoneなら設定>カメラで4Kに</span>
+                     </div>
+                 </div>
+                 <!-- Item 19 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="19"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">19</span>フレームレート設定 (30fps〜60ps)</span>
+                         <p class="item-description">動きに合わせてフレーム数を設定。</p>
+                         <span class="item-example">動きが多めの動画なら必ず60fps以上にする</span>
+                         <div class="item-details">
+                             <h4>設定の目安</h4>
+                             <ul>
+                                <li><strong>画質(解像度):</strong> 1080p (Full HD) 以上推奨。4Kならより高精細。</li>
+                                <li><strong>フレームレート(fps):</strong> 通常30fps。動きの速いシーンや滑らかさ重視なら60fps。</li>
+                             </ul>
+                             <p style="font-size:0.8em; color: var(--dark-gray)">※高画質・高fpsはデータ容量が大きくなります。</p>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 20 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="20"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">20</span>三脚/ジンバルでブレ防止</span>
+                         <p class="item-description">安定した映像を撮るために固定機材を使用。</p>
+                         <span class="item-example" style="color: red; font-weight: bold;">三脚やジンバルなどを活用 (おススメ機材参照)</span>
+                          <div class="item-details">
+                             <img src="https://images.unsplash.com/photo-1599937710341-4b5a14103986?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="三脚を使った撮影">
+                             <!-- Unsplash: https://unsplash.com/photos/black-camera-tripod-on-brown-wooden-table-1599937710341-4b5a14103986 -->
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 21 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="21"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">21</span>縦画面 (9:16) で撮影</span>
+                         <p class="item-description">Instagram用に縦長で撮る。</p>
+                         <span class="item-example">画面比率を確認</span>
+                         <div class="item-details">
+                             <h4>9:16 縦画面</h4>
+                             <p>スマホを縦に持って撮影するのが基本です。</p>
+                             <div style="width: 150px; height: 266px; border: 3px solid var(--text-color); margin: 10px auto; border-radius: 20px; display: flex; justify-content: center; align-items: center; background: #eee;">
+                                 <span style="font-size: 1.5em; color: var(--dark-gray); writing-mode: vertical-rl;">9:16</span>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 22 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="22"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">22</span>ピントが合っている</span>
+                         <p class="item-description">被写体にしっかり焦点が合っているか確認。</p>
+                         <span class="item-example">オートフォーカスON / 手動調整</span>
+                     </div>
+                 </div>
+                 <!-- Item 23 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="23"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">23</span>バッテリー確認</span>
+                         <p class="item-description">途中で止まらないよう残量チェック。</p>
+                         <span class="item-example">バッテリー80%以上推奨</span>
+                         <div class="item-details">
+                             <h4>撮影前の最終チェック</h4>
+                             <ul style="list-style: '📱'; padding-left: 20px;">
+                                 <li>十分な空き容量があるか？</li>
+                                 <li>バッテリーは十分か？ (80%以上推奨、できれば充電しながら)</li>
+                                 <li>通知はオフにしたか？ (おやすみモードなど)</li>
+                             </ul>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- STEP 3: 音声・照明 (No. 24-29) -->
+        <section class="checklist-section" id="step3">
+             <div class="section-header">
+                 <h2><span class="icon">🎤💡</span> STEP 3：音声・照明</h2>
+                 <span class="section-toggle">▼</span>
+             </div>
+             <div class="section-content">
+                 <!-- Item 24 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="24"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">24</span>外部マイク使用または音質チェック済み</span>
+                         <p class="item-description">ノイズが少なく明瞭な音声を録る。</p>
+                         <span class="item-example" style="color: red; font-weight: bold;">ピンマイクを使用 (おススメ機材参照)</span>
+                         <div class="item-details">
+                             <h4>クリアな音声のために</h4>
+                             <p>スマホ内蔵マイクより外部マイクの方が、環境音を拾いにくくクリアな音声を録音できます。</p>
+                             <img src="https://images.unsplash.com/photo-1605910461660-aeb698b1a20d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="外部マイク（ピンマイク）">
+                             <!-- Unsplash: https://unsplash.com/photos/black-lavalier-microphone-on-white-surface-1605910461660-aeb698b1a20d -->
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 25 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="25"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">25</span>音割れ・ノイズ確認済みか</span>
+                         <p class="item-description">事前テストで音がクリアか確認する。</p>
+                         <span class="item-example">音量によっては音割れの可能性もあるので、事前確認</span>
+                     </div>
+                 </div>
+                 <!-- Item 26 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="26"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">26</span>環境音 (外・機械音) カット</span>
+                         <p class="item-description">雑音のない静かな場所で撮る。</p>
+                         <span class="item-example">エアコンをOFFにする</span>
+                         <div class="item-details">
+                             <h4>ノイズ対策</h4>
+                             <ul>
+                                 <li>静かな部屋で収録する</li>
+                                 <li>エアコンや扇風機を止める</li>
+                                 <li>窓を閉める</li>
+                                 <li>マイクにウィンドスクリーン（風防）をつける</li>
+                             </ul>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 27 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="27"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">27</span>声のボリューム・トーンが適正</span>
+                         <p class="item-description">明るく聞き取りやすい声で話す。</p>
+                         <span class="item-example">普段より少しはっきりと、明るくを意識して話す</span>
+                     </div>
+                 </div>
+                 <!-- Item 28 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="28"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">28</span>顔に影が不自然に出ていない</span>
+                         <p class="item-description">照明の角度を調整して影を避ける。</p>
+                         <span class="item-example">真上や真横のライトは避ける</span>
+                         <div class="item-details">
+                            <h4>ライティングの比較</h4>
+                            <div class="comparison">
+                                <div class="good">
+                                    <h5>😊 良い例</h5>
+                                    <p>正面からのライトで顔全体が明るく、影が少ない</p>
+                                </div>
+                                <div class="bad">
+                                    <h5>🙁 悪い例</h5>
+                                    <p>横や上からの強い光で不自然な影ができる、顔が暗い</p>
+                                </div>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1575444459407-1d75f836953f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="適切な照明のイメージ">
+                             <!-- Unsplash: https://unsplash.com/photos/woman-in-white-shirt-sitting-on-chair-1575444459407-1d75f836953f (イメージとして) -->
+                        </div>
+                     </div>
+                 </div>
+                 <!-- Item 29 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="29"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">29</span>BGMが声を邪魔していない</span>
+                         <p class="item-description">BGMの音量が大きすぎて、声がかき消されていないか確認する。</p>
+                         <span class="item-example">BGM: 20〜30%、声: 70〜80%の比率</span>
+                         <div class="item-details">
+                             <h4>音量バランスの目安</h4>
+                             <p>ナレーションやセリフが主役。BGMは邪魔にならない程度に調整しましょう。</p>
+                             <!-- ここにボリュームメーターのような図解を追加可能 -->
+                             <p><strong>話し声:</strong> 70% 〜 80%</p>
+                             <p><strong>BGM:</strong> 20% 〜 30%</p>
+                             <p style="font-size:0.8em; color: var(--dark-gray)">※編集アプリにより調整方法は異なります</p>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- STEP 4: 撮影時 (No. 30-39) -->
+        <section class="checklist-section" id="step4">
+             <div class="section-header">
+                 <h2><span class="icon">🎥</span> STEP 4：撮影時</h2>
+                 <span class="section-toggle">▼</span>
+             </div>
+             <div class="section-content">
+                 <!-- Item 30 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="30"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">30</span>顔や頭がフレームに収まっている (切れていない)</span>
+                         <p class="item-description">被写体の頭や顔がフレームから切れていないかをチェックし、自然な余白が取れているかも確認する。</p>
+                         <span class="item-example">左右上下に余白を作る (余白があった方が高品質に見える)</span>
+                     </div>
+                 </div>
+                 <!-- Item 31 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="31"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">31</span>テロップスペース確保</span>
+                         <p class="item-description">画面の上下に十分なスペースを確保して、テロップや字幕が被写体と重ならないように配置する。</p>
+                         <span class="item-example">下部1/3はテロップ用に空ける</span>
+                         <div class="item-details">
+                            <h4>撮影構図のポイント</h4>
+                            <div style="width: 150px; height: 266px; border: 3px solid var(--text-color); margin: 10px auto; border-radius: 20px; background: #eee; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 10px; box-sizing: border-box;">
+                                <div style="height: 40px; width: 100%; background: rgba(0,0,0,0.1); text-align: center; line-height: 40px; font-size: 0.8em;">上部余白</div>
+                                <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--accent-color); display: flex; justify-content: center; align-items: center; color: white;">顔</div>
+                                </div>
+                                <div style="height: 60px; width: 100%; background: rgba(92, 225, 230, 0.3); text-align: center; line-height: 60px; font-size: 0.8em; color: var(--accent-color);">テロップスペース<br>(下部1/3目安)</div>
+                            </div>
+                            <p>特に画面下部はUIと重なることがあるため、余裕を持たせましょう。</p>
+                        </div>
+                     </div>
+                 </div>
+                 <!-- Item 32 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="32"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">32</span>目線がカメラに向いている</span>
+                         <p class="item-description">視聴者とアイコンタクトするように、スマホやカメラのレンズをしっかり見て話す。</p>
+                         <span class="item-example">スマホのレンズを見ながら話す</span>
+                     </div>
+                 </div>
+                 <!-- Item 33 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="33"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">33</span>無表情や緊張感が出ていないか</span>
+                         <p class="item-description">無表情や緊張した雰囲気が出ないよう、笑顔やリラックスした雰囲気で話すことを意識する。</p>
+                         <span class="item-example">1回深呼吸してから撮影開始</span>
+                     </div>
+                 </div>
+                 <!-- Item 34 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="34"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">34</span>間延びせずテンポよく話している</span>
+                         <p class="item-description">1文が長すぎないように調整。リールでは、変な間があると離脱率が上がります。</p>
+                         <span class="item-example">間は0.5秒単位で調整</span>
+                     </div>
+                 </div>
+                 <!-- Item 35 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="35"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">35</span>複数カットで構成を意識している</span>
+                         <p class="item-description">動画の単調さを避けるために、複数のカットや視点(アップ、引きなど)を使い分けて構成する。</p>
+                         <span class="item-example">冒頭は寄り / 中盤は引きなど</span>
+                     </div>
+                 </div>
+                 <!-- Item 36 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="36"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">36</span>Bロール (手元・背景など) を用意している</span>
+                         <p class="item-description">解説中に挿入できる素材も撮る。</p>
+                         <span class="item-example">手元作業や商品アップ映像</span>
+                         <div class="item-details">
+                            <h4>Bロールとは？</h4>
+                            <p>メインの映像（Aロール）の間に挿入する補足的な映像のこと。説明内容に関連する手元や風景、イメージ映像などがあると、動画の質が上がります。</p>
+                             <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bロールの例（手元）">
+                             <!-- Unsplash: https://unsplash.com/photos/person-using-macbook-pro-1499951360447-b19be8fe80f5 -->
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 37 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="37"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">37</span>NGカット用に複数撮影</span>
+                         <p class="item-description">1パターンだけでなく数回録る。</p>
+                         <span class="item-example">最低2〜3パターン撮影</span>
+                     </div>
+                 </div>
+                 <!-- Item 38 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="38"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">38</span>手ブレの少ない映像になっている</span>
+                         <p class="item-description">揺れの少ない映像を撮るために、三脚を使うか、ブレ防止の機能を活用して安定させる。</p>
+                         <span class="item-example" style="color: red; font-weight: bold;">手ブレ補正ON / 三脚活用 (おススメ機材参照)</span>
+                     </div>
+                 </div>
+                 <!-- Item 39 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="39"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">39</span>映り込み (生活感など) に注意している</span>
+                         <p class="item-description">余計な物・人が映らないように。特に窓ガラスや鏡は注意。</p>
+                         <span class="item-example">鏡 / 窓 / 背景の映り込み確認</span>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- STEP 5: 編集 (No. 40-49) -->
+        <section class="checklist-section" id="step5">
+             <div class="section-header">
+                 <h2><span class="icon">✂️</span> STEP 5：編集</h2>
+                 <span class="section-toggle">▼</span>
+             </div>
+             <div class="section-content">
+                 <!-- Item 40 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="40"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">40</span>無音でも伝わる構成になっている</span>
+                         <p class="item-description">音を出さずに視聴しても内容が理解できるように、字幕や画面構成で補足されているか。</p>
+                         <span class="item-example">字幕だけでも何を伝えたいのか分かるようにする / ジェスチャーやイラストを活用</span>
+                     </div>
+                 </div>
+                 <!-- Item 41 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="41"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">41</span>テロップの文字サイズ・色が見やすい</span>
+                         <p class="item-description">背景とのコントラストやフォント選びにより、誰が見ても読みやすいテロップになっているか。</p>
+                         <span class="item-example">白背景には黒文字、フォントはゴシック系を使用</span>
+                         <div class="item-details">
+                             <h4>見やすいテロップのポイント</h4>
+                             <div class="comparison">
+                                <div class="good">
+                                    <h5>😊 見やすい例</h5>
+                                    <p>背景と対照的な色、ゴシック体など読みやすいフォント、適度な大きさ、縁取りや背景色で視認性UP</p>
+                                </div>
+                                <div class="bad">
+                                    <h5>🙁 見にくい例</h5>
+                                    <p>背景と同系色、細い明朝体、小さすぎる文字、装飾過多</p>
+                                </div>
+                            </div>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 42 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="42"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">42</span>強調ワードに装飾あり (色・枠など)</span>
+                         <p class="item-description">伝えたいキーワードが装飾されており、目に留まりやすくなっているか。</p>
+                         <span class="item-example">重要な言葉は大きな文字にしたり、色を変えたりする</span>
+                          <div class="item-details">
+                             <h4>装飾テクニック</h4>
+                             <p>重要な単語やフレーズは <strong style="color: red;">色を変えたり</strong>、<span style="background-color: yellow;">背景色をつけたり</span>、<strong>太字</strong>にするなどして強調しましょう。</p>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 43 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="43"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">43</span>誤字・脱字チェック済み</span>
+                         <p class="item-description">テロップ・キャプションに誤字・脱字がないように見直しされているか。</p>
+                         <span class="item-example">音読しながらチェック / 友人に見せる</span>
+                     </div>
+                 </div>
+                 <!-- Item 44 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="44"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">44</span>テロップが顔と被らない配置</span>
+                         <p class="item-description">話者の口元や顔の表情が隠れないように、字幕の位置を調整しているか。</p>
+                         <span class="item-example">字幕は画面下1/3を基準に配置</span>
+                     </div>
+                 </div>
+                 <!-- Item 45 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="45"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">45</span>ナレーションとBGMの音量バランス</span>
+                         <p class="item-description">声がしっかり聞こえるように、BGMとナレーションの音量が適切に設定されているか。</p>
+                         <span class="item-example">BGM: 30%、音声: 70%で調整</span>
+                     </div>
+                 </div>
+                 <!-- Item 46 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="46"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">46</span>効果音 (SE) を使ってテンポ補助</span>
+                         <p class="item-description">テンポや場面の切り替えを伝えるために、効果音を適切に入れているか。</p>
+                         <span class="item-example">場面転換に「ポン」「チャッ」などを追加</span>
+                     </div>
+                 </div>
+                 <!-- Item 47 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="47"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">47</span>トレンド音源を使用</span>
+                         <p class="item-description">Instagramで流行中の音源を使い、再生数アップを狙っているか。</p>
+                         <span class="item-example">リール作成時の「人気の音源」タブから選択</span>
+                         <div class="item-details">
+                            <h4>トレンド音源の探し方</h4>
+                            <ul>
+                                <li>リール作成画面の「音源」で「おすすめ」や「人気」をチェック</li>
+                                <li>流行っているリールで使われている音源を参考にする</li>
+                                <li>音源名の横にある上向き矢印「↗」はトレンドの印</li>
+                            </ul>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 48 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="48"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">48</span>映像と音 (ロパク) がズレていないか</span>
+                         <p class="item-description">話すタイミングと声・音のタイミングが合っているかを確認。</p>
+                         <span class="item-example">カットごとに再確認 / 再調整する</span>
+                     </div>
+                 </div>
+                 <!-- Item 49 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="49"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">49</span>動画のテンポが良く、冗長なシーンがない</span>
+                         <p class="item-description">全体を通してテンポが良く、無駄な間がない編集になっているか。</p>
+                         <span class="item-example">「えー」「うーん」などの間はカット</span>
+                         <div class="item-details">
+                             <h4>カット編集の重要性</h4>
+                             <p>無駄な部分をカットすることで、視聴者を飽きさせずテンポの良い動画になります。</p>
+                             <!-- Unsplash: https://unsplash.com/photos/person-using-macbook-pro-1572177191856-3cde618dee7f -->
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- STEP 6: 投稿前チェック (No. 50-55) -->
+        <section class="checklist-section" id="step6">
+             <div class="section-header">
+                 <h2><span class="icon">🚀</span> STEP 6：投稿前チェック</h2>
+                 <span class="section-toggle">▼</span>
+             </div>
+             <div class="section-content">
+                 <!-- Item 50 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="50"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">50</span>サムネイル画像が内容を示しているか</span>
+                         <p class="item-description">一目で動画の内容が伝わり、見たくなるような魅力的なサムネイルが設定されているか。</p>
+                         <span class="item-example">動画内の一番キャッチなシーンをサムネにする。あるいはサムネ用の画像を別途作成</span>
+                          <div class="item-details">
+                             <h4>魅力的なサムネイルとは？</h4>
+                             <ul>
+                                 <li>動画の内容が一目でわかる</li>
+                                 <li>興味を引くキャッチコピーが入っている</li>
+                                 <li>文字が見やすい（フィード上では小さく表示されるため）</li>
+                                 <li>アカウントの世界観と統一感を出す（任意）</li>
+                             </ul>
+                              <!-- Unsplash: https://unsplash.com/photos/person-holding-black-iphone-5-1611162617213-7d7a39e9b1d7 -->
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 51 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="51"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">51</span>キャプションに明確なCTAがあるか</span>
+                         <p class="item-description">視聴者に次のアクションを促す言葉 (保存・シェア・登録など) が入っているか。</p>
+                         <span class="item-example">「保存して見返してね」「LINE登録はこちら」</span>
+                     </div>
+                 </div>
+                 <!-- Item 52 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="52"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">52</span>ハッシュタグが適切に設定されている</span>
+                         <p class="item-description">ジャンル認知させるために、関連性のあるハッシュタグを使用しているか。</p>
+                         <span class="item-example">大ジャンル2個、中ジャンル2個、小ジャンル1個程度</span>
+                         <div class="item-details">
+                             <h4>ハッシュタグ選定のヒント</h4>
+                             <table style="width:100%; border-collapse: collapse; font-size: 0.9em;">
+                                <thead>
+                                    <tr style="background-color: #e0fcfd; text-align: left;">
+                                        <th style="padding: 8px; border: 1px solid var(--gray);">種類</th>
+                                        <th style="padding: 8px; border: 1px solid var(--gray);">投稿数目安</th>
+                                        <th style="padding: 8px; border: 1px solid var(--gray);">例</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 8px; border: 1px solid var(--gray);">ビッグワード</td>
+                                        <td style="padding: 8px; border: 1px solid var(--gray);">10万件〜</td>
+                                        <td style="padding: 8px; border: 1px solid var(--gray);">#インスタグラム</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; border: 1px solid var(--gray);">ミドルワード</td>
+                                        <td style="padding: 8px; border: 1px solid var(--gray);">1万〜10万件</td>
+                                        <td style="padding: 8px; border: 1px solid var(--gray);">#インスタ運用</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; border: 1px solid var(--gray);">スモールワード</td>
+                                        <td style="padding: 8px; border: 1px solid var(--gray);">〜1万件</td>
+                                        <td style="padding: 8px; border: 1px solid var(--gray);">#リール初心者</td>
+                                    </tr>
+                                </tbody>
+                             </table>
+                             <p>これらのワードをバランス良く組み合わせるのがおすすめです。(例: 大2, 中2, 小1)</p>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Item 53 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="53"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">53</span>投稿プレビュー画面で表示確認</span>
+                         <p class="item-description">Instagramの投稿画面で、表示ズレや切れが起きていないか事前に最終確認する。</p>
+                         <span class="item-example">プレビューで上下トリミングを確認</span>
+                     </div>
+                 </div>
+                 <!-- Item 54 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="54"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">54</span>保存したくなる内容か最終確認</span>
+                         <p class="item-description">見た人が「また見たい」と思える価値のある内容になっているかを最終確認する。</p>
+                         <span class="item-example">インスタ運用テクニックが分かりやすくまとめられている</span>
+                     </div>
+                 </div>
+                 <!-- Item 55 -->
+                 <div class="checklist-item">
+                     <div class="checkbox-container"><span class="custom-checkbox" data-item-id="55"></span></div>
+                     <div class="item-content">
+                         <span class="item-title"><span class="item-number">55</span>キャプションと動画のCTAが一致しているか</span>
+                         <p class="item-description">動画内の誘導とキャプション内の指示が矛盾していないかチェック。</p>
+                         <span class="item-example">動画も文章も「保存してね」で統一</span>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2023 インスタリール制作チェックリスト</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.checklist-section');
+            const progressBar = document.getElementById('progressBar');
+            const allCheckboxes = document.querySelectorAll('.custom-checkbox');
+            const totalItems = 55; // Updated total number of items
+
+            // Function to update progress bar
+            const updateProgress = () => {
+                const checkedCount = document.querySelectorAll('.custom-checkbox.checked').length;
+                const progressPercentage = totalItems > 0 ? (checkedCount / totalItems) * 100 : 0;
+                progressBar.style.width = `${progressPercentage}%`;
+            };
+
+            // Accordion functionality
+            sections.forEach(section => {
+                const header = section.querySelector('.section-header');
+                const content = section.querySelector('.section-content');
+                const toggle = section.querySelector('.section-toggle');
+
+                header.addEventListener('click', () => {
+                    const isOpen = section.classList.contains('open');
+                    // Toggle current section
+                    if (isOpen) {
+                        section.classList.remove('open');
+                        content.style.display = 'none';
+                        toggle.textContent = '▼';
+                    } else {
+                        section.classList.add('open');
+                        content.style.display = 'block';
+                        toggle.textContent = '▲';
+                         // Scroll section into view if needed, slight offset for header/progress bar
+                         setTimeout(() => {
+                            const headerOffset = 80; // Adjust as needed
+                            const elementPosition = section.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                             window.scrollTo({
+                                top: offsetPosition,
+                                behavior: "smooth"
+                            });
+                        }, 300); // Delay slightly for animation
+                    }
+                });
+            });
+
+            // Checkbox functionality & Local Storage
+            allCheckboxes.forEach(checkbox => {
+                const itemId = checkbox.getAttribute('data-item-id');
+                // Load state from local storage
+                if (localStorage.getItem(`checklist-item-${itemId}`) === 'checked') {
+                    checkbox.classList.add('checked');
+                }
+
+                checkbox.addEventListener('click', (e) => {
+                    // Prevent accordion toggle when clicking checkbox itself
+                    e.stopPropagation();
+                    checkbox.classList.toggle('checked');
+                    // Save state to local storage
+                    if (checkbox.classList.contains('checked')) {
+                        localStorage.setItem(`checklist-item-${itemId}`, 'checked');
+                    } else {
+                        localStorage.removeItem(`checklist-item-${itemId}`);
+                    }
+                    updateProgress(); // Update progress bar on check/uncheck
+                });
+
+                // Allow clicking the item title/content to check the box too
+                const itemContent = checkbox.closest('.checklist-item').querySelector('.item-content');
+                 if(itemContent){
+                     itemContent.style.cursor = 'pointer'; // Indicate clickable area
+                     itemContent.addEventListener('click', () => {
+                         checkbox.click(); // Trigger checkbox click programmatically
+                     });
+                 }
+            });
+
+            // Initial progress bar update
+            updateProgress();
+
+            // Scroll animation for sections
+             const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+        });
+    </script>
+
+</body>
+</html>
